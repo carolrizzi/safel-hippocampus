@@ -1,0 +1,94 @@
+//created on: 03-Mar-2015
+package uk.ac.kent.cs
+
+// ===== IMPORT ============================= //
+import uk.ac.kent.cs.model.event.*;
+import uk.ac.kent.cs.model.situation.*;
+import java.util.ArrayList;
+
+// ===== GLOBAL ============================= //
+global java.lang.Integer adrThreshold;
+
+// ===== EVENT ============================== //
+declare EnvironmentalCue
+    @role( event )
+end
+
+declare Adrenaline
+    @role( event )
+end
+
+declare DangerSituation
+	@role( event )
+end
+
+declare EminentDangerSituation
+	@role( event )
+end
+
+// ===== RULE =============================== //
+
+rule "Adrenaline Level Change"
+	salience 150
+	when
+		adr1 : Adrenaline()
+		adr2 : Adrenaline(this after adr1)
+	then
+		System.out.println("Deleting adrenaline of level " + adr1.getLevel() + ". Keeping level: " + adr2.getLevel());
+		retract(adr1);
+end
+
+rule "Eminent Danger Situation"
+	salience 100
+	when
+		adrenaline : Adrenaline (level >= adrThreshold)
+        not DangerSituation (status == Status.PRESENT)
+        envCues : ArrayList (size > 0) from collect (EnvironmentalCue(this before adrenaline) over window:time( 2m ))
+	then
+		System.out.println("Creating EminentDangerSituation");
+        EminentDangerSituation pds = new EminentDangerSituation(envCues, adrenaline);
+        insert(pds);
+end
+
+rule "Danger Situation"
+	salience 50
+    when
+    	adrenaline : Adrenaline (level >= adrThreshold)
+        not DangerSituation (status == Status.PRESENT)
+    then
+    	System.out.println("Creating DangerSituation. Adrenaline level: " + adrenaline.getLevel());
+        DangerSituation ds = new DangerSituation(adrenaline);
+        insert(ds);
+end
+
+rule "Danger Situation End"
+    when
+        adrenaline : Adrenaline (level < adrThreshold)
+        danger : DangerSituation (status == Status.PRESENT)
+    then
+    	System.out.println("Deactivating DangerSituation");
+        danger.terminate(adrenaline);
+        update(danger);
+end
+
+rule "Environmental Cue During Danger Situation"
+	no-loop
+	when
+		event : EnvironmentalCue()
+		danger : DangerSituation (status == Status.PRESENT, this before event)
+	then
+		System.out.println("Detecting new EnvironmentalCue during DangerSituation");
+		danger.addEnvironmentalCue(event);
+		update(danger);
+end
+
+rule "Adrenaline Change During Danger Situation"
+	no-loop
+	when
+		adrenaline : Adrenaline (level >= adrThreshold)
+        danger : DangerSituation (status == Status.PRESENT, this before adrenaline)
+	then
+		System.out.println("Updating Adrenaline of DangerSituation. New adrenaline level: " + adrenaline.getLevel());
+		danger.addAdrenaline(adrenaline);
+		update(danger);
+end
