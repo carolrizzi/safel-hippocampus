@@ -1,5 +1,9 @@
 package uk.ac.kent.cs;
 
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
 import org.drools.KnowledgeBaseFactory;
@@ -15,12 +19,16 @@ import org.drools.runtime.StatefulKnowledgeSession;
 import org.drools.runtime.conf.ClockTypeOption;
 import org.drools.runtime.rule.FactHandle;
 
+import uk.ac.kent.cs.model.event.Adrenaline;
+import uk.ac.kent.cs.model.event.EnvironmentalCue;
+import uk.ac.kent.cs.model.situation.Situation;
+
 public class Hippocampus {
 
 	private static KnowledgeBase kbase = null;
 	private static StatefulKnowledgeSession ksession = null;
 	public static final int ADRENALINE_THRESHOLD = 5;
-
+	
 	public Hippocampus() throws Exception {
 		this.initKnowledgeBase();
 		this.initKownledgeSession();
@@ -50,21 +58,53 @@ public class Hippocampus {
     	ksession.setGlobal("adrThreshold", ADRENALINE_THRESHOLD);
     }
     
-    public FactHandle insert (Object object) {
+    public void insertEnvironmentalCue (byte [] features) {
+    	EnvironmentalCue cue = new EnvironmentalCue(features);
+    	this.insert(cue);
+    }
+    
+    public void insertAdrenaline (int level) {
+    	Adrenaline adrenaline = new Adrenaline(level);
+    	this.insert(adrenaline);
+    }
+    
+    public static <T extends Situation> void projectSituation (T situation) {
+    	try {
+    		byte [] serObj = serialize(situation);
+			System.err.println(situation.getClass().toString() + ": " + serObj.toString());
+//			Runtime.getRuntime().exec("matlabscript.m " + serObj);
+		} catch (Exception e) {
+			System.err.println("Could not project DangerSituation.");
+			e.printStackTrace();
+		}
+    }
+    
+    private FactHandle insert (Object object) {
     	FactHandle fh = ksession.insert(object);
     	ksession.fireAllRules();
     	return fh;
     }
     
-    public void update (FactHandle fh, Object object) {
-    	ksession.update(fh, object);
-    	ksession.fireAllRules();
+    private static byte [] serialize (Object obj) throws Exception {
+    	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	ObjectOutput out = null;
+		out = new ObjectOutputStream(bos);   
+		out.writeObject(obj);
+		byte [] serializedObj = bos.toByteArray();
+		out.close();
+		bos.close();
+		return serializedObj; 	
     }
+    
+//    private void update (FactHandle fh, Object object) {
+//    	ksession.update(fh, object);
+//    	ksession.fireAllRules();
+//    }
 
-    public void retract (FactHandle fh) {
-    	ksession.retract(fh);
-    	ksession.fireAllRules();
-    }
+//    public void retract (FactHandle fh) {
+//    	ksession.retract(fh);
+//    	ksession.fireAllRules();
+//    }
 	
     public void disposeSession () {
     	ksession.dispose();

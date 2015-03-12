@@ -51,11 +51,11 @@ public class EminentDangerSituationRuleTest extends RulesTest {
 	public void eminentDangerSituation2 () {
 		System.out.println("[JUnit] Starting test 'eminentDangerSituation2'");
 		try {
-			EnvironmentalCue e1 = new EnvironmentalCue(new int [] {1,2,3}, "e1");
+			EnvironmentalCue e1 = new EnvironmentalCue(new byte [] {1,2,3});
 			hippocampus.insert(e1, defaultDelay);
 			checkEminentDangerSituation(0);
 			
-			EnvironmentalCue e2 = new EnvironmentalCue(new int [] {1,4,5}, "e2");
+			EnvironmentalCue e2 = new EnvironmentalCue(new byte [] {1,4,5});
 			hippocampus.insert(e2, defaultDelay);
 			checkEminentDangerSituation(0);
 			
@@ -94,11 +94,11 @@ public class EminentDangerSituationRuleTest extends RulesTest {
 	public void eminentDangerSituation3 () {
 		System.out.println("[JUnit] Starting test 'eminentDangerSituation3'");
 		try {
-			EnvironmentalCue e1 = new EnvironmentalCue(new int [] {1,2,3}, "e1");
+			EnvironmentalCue e1 = new EnvironmentalCue(new byte [] {1,2,3});
 			hippocampus.insert(e1, defaultDelay);
 			checkEminentDangerSituation(0);
 			
-			EnvironmentalCue e2 = new EnvironmentalCue(new int [] {1,2,3}, "e2");
+			EnvironmentalCue e2 = new EnvironmentalCue(new byte [] {1,2,3});
 			hippocampus.insert(e2, 180);
 			checkEminentDangerSituation(0);
 			

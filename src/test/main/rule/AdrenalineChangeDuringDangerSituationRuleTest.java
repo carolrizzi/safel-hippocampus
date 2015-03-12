@@ -40,25 +40,27 @@ public class AdrenalineChangeDuringDangerSituationRuleTest extends RulesTest {
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();
-			this.situationCheckAdrenalines(situation, new Integer[]{7});
+			this.situationCheckAdrenalines(situation, new Integer[]{adrLevel});
 			
+			int adrLevel1 = adrLevel;
 			adrLevel = threshold + 3;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();
-			this.situationCheckAdrenalines(situation, new Integer[]{7,8});
+			this.situationCheckAdrenalines(situation, new Integer[]{adrLevel1,adrLevel});
 
+			int adrLevel2 = adrLevel;
 			adrLevel = threshold - 1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();
-			this.situationCheckAdrenalines(situation, new Integer[]{7,8});
+			this.situationCheckAdrenalines(situation, new Integer[]{adrLevel1,adrLevel2});
 
 			adrLevel = threshold - 2;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();
-			this.situationCheckAdrenalines(situation, new Integer[]{7,8});
+			this.situationCheckAdrenalines(situation, new Integer[]{adrLevel1,adrLevel2});
 			
 			adrLevel = threshold + 1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
@@ -70,7 +72,7 @@ public class AdrenalineChangeDuringDangerSituationRuleTest extends RulesTest {
 				if(sit.getAdrenalines().isEmpty()){
 					count++;
 				}else{
-					this.situationCheckAdrenalines(sit, new Integer[]{7,8});
+					this.situationCheckAdrenalines(sit, new Integer[]{adrLevel1,adrLevel2});
 					count += 2;
 				}
 			}

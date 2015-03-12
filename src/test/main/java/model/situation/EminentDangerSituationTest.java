@@ -16,9 +16,9 @@ public class EminentDangerSituationTest {
 
 	@Test
 	public final void testEminentDangerSituation() {
-		EnvironmentalCue e1 = new EnvironmentalCue(new int [] {1,2,3}, "e1");
-		EnvironmentalCue e2 = new EnvironmentalCue(new int [] {4,5,6}, "e2");
-		EnvironmentalCue e3 = new EnvironmentalCue(new int [] {7,8,9}, "e3");
+		EnvironmentalCue e1 = new EnvironmentalCue(new byte [] {1,2,3});
+		EnvironmentalCue e2 = new EnvironmentalCue(new byte [] {4,5,6});
+		EnvironmentalCue e3 = new EnvironmentalCue(new byte [] {7,8,9});
 		
 		ArrayList<EnvironmentalCue> cues = new ArrayList<EnvironmentalCue>();
 		cues.add(e2);

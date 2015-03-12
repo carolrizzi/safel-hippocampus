@@ -2,19 +2,15 @@ package uk.ac.kent.cs.model.event;
 
 public class EnvironmentalCue extends Event{
 
-	private int [] features;
-	private String name;
+	private static final long serialVersionUID = 1L;
+	private byte [] features;
 	
-	public EnvironmentalCue(int [] features, String name) {
-		this.name = name;
+	public EnvironmentalCue(byte [] features) {
 		this.features = features;
 	}
 	
-	public int[] getFeatures() {
+	public byte [] getFeatures() {
 		return features;
 	}
 	
-	public String getName() {
-		return name;
-	}
 }

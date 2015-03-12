@@ -68,10 +68,10 @@ public class DangerSituationEndRuleTest extends RulesTest {
 			DangerSituation situation = this.getDangerSituation();
 			assertEquals("DangerSituation has incorrect status.", Situation.Status.PRESENT, situation.getStatus());
 			
-			EnvironmentalCue e1 = new EnvironmentalCue(new int [] {1,2,3}, "e1");
+			EnvironmentalCue e1 = new EnvironmentalCue(new byte [] {1,2,3});
 			hippocampus.insert(e1, defaultDelay);
 			
-			EnvironmentalCue e2 = new EnvironmentalCue(new int [] {1,4,5}, "e2");
+			EnvironmentalCue e2 = new EnvironmentalCue(new byte [] {1,4,5});
 			hippocampus.insert(e2, defaultDelay);
 			
 			adrLevel = threshold - 1;

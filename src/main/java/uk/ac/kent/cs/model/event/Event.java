@@ -1,9 +1,10 @@
 package uk.ac.kent.cs.model.event;
 
-public abstract class Event implements Comparable<Event>{
+import java.io.Serializable;
 
-	//TODO: change features' type to byte
-//	private int [] features;
+public abstract class Event implements Serializable, Comparable<Event>{
+	
+	private static final long serialVersionUID = 1L;
 	private long timestamp;
 	
 	public Event() {
@@ -15,8 +16,10 @@ public abstract class Event implements Comparable<Event>{
 	}
 
 	public int compareTo(Event event) {
-		return (new Long(this.timestamp - event.getTimestamp())).intValue();
-//		(new EminentDangerSituationRuleTest()).
+		if(event == null) throw new NullPointerException("Event object cannot be null");
+		if (this.timestamp < event.getTimestamp()) return -1;
+		if (this.timestamp > event.getTimestamp()) return 1;
+		return 0;
 	}
 	
 	//TODO: I may need it in the future

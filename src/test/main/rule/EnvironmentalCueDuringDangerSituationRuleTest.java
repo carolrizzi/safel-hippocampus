@@ -27,7 +27,7 @@ public class EnvironmentalCueDuringDangerSituationRuleTest extends RulesTest {
 	public void environmentalCueDuringDangerSituation1 () {
 		System.out.println("[JUnit] Starting test 'environmentalCueDuringDangerSituation1'");
 		try {
-			EnvironmentalCue e1 = new EnvironmentalCue(new int [] {1,2,3}, "e1");
+			EnvironmentalCue e1 = new EnvironmentalCue(new byte [] {1,2,3});
 			hippocampus.insert(e1, defaultDelay);
 			this.checkDangerSituation(0);
 			
@@ -37,7 +37,7 @@ public class EnvironmentalCueDuringDangerSituationRuleTest extends RulesTest {
 			DangerSituation situation = this.getDangerSituation();
 			this.situationCheckEnvironmentalCues(situation);
 			
-			EnvironmentalCue e2 = new EnvironmentalCue(new int [] {1,4,5}, "e2");
+			EnvironmentalCue e2 = new EnvironmentalCue(new byte [] {1,4,5});
 			hippocampus.insert(e2, defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();
@@ -49,7 +49,7 @@ public class EnvironmentalCueDuringDangerSituationRuleTest extends RulesTest {
 			situation = this.getDangerSituation();
 			this.situationCheckEnvironmentalCues(situation, new EnvironmentalCue[]{e2});
 			
-			EnvironmentalCue e3 = new EnvironmentalCue(new int [] {1,8,9}, "e3");
+			EnvironmentalCue e3 = new EnvironmentalCue(new byte [] {1,8,9});
 			hippocampus.insert(e3, defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();

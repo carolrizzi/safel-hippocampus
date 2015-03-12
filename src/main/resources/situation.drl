@@ -11,6 +11,7 @@ global java.lang.Integer adrThreshold;
 
 // ===== EVENT ============================== //
 declare EnvironmentalCue
+	@expires( 3m )
     @role( event )
 end
 
@@ -18,11 +19,11 @@ declare Adrenaline
     @role( event )
 end
 
-declare DangerSituation
+declare EminentDangerSituation
 	@role( event )
 end
 
-declare EminentDangerSituation
+declare DangerSituation
 	@role( event )
 end
 
@@ -38,16 +39,17 @@ rule "Adrenaline Level Change"
 		retract(adr1);
 end
 
+
 rule "Eminent Danger Situation"
 	salience 100
 	when
 		adrenaline : Adrenaline (level >= adrThreshold)
         not DangerSituation (status == Status.PRESENT)
-        envCues : ArrayList (size > 0) from collect (EnvironmentalCue(this before adrenaline) over window:time( 2m ))
+        cues : ArrayList (size > 0) from collect (EnvironmentalCue(this before adrenaline) over window:time( 2m ))
 	then
-		System.out.println("Creating EminentDangerSituation");
-        EminentDangerSituation pds = new EminentDangerSituation(envCues, adrenaline);
-        insert(pds);
+        EminentDangerSituation eds = new EminentDangerSituation(cues, adrenaline);
+        Hippocampus.projectSituation(eds);
+        insert(eds);
 end
 
 rule "Danger Situation"
@@ -56,39 +58,50 @@ rule "Danger Situation"
     	adrenaline : Adrenaline (level >= adrThreshold)
         not DangerSituation (status == Status.PRESENT)
     then
-    	System.out.println("Creating DangerSituation. Adrenaline level: " + adrenaline.getLevel());
         DangerSituation ds = new DangerSituation(adrenaline);
         insert(ds);
+end
+
+rule "Generic Situation"
+	salience 10
+	when
+		not DangerSituation (status == Status.PRESENT)
+		lastDanger : DangerSituation(status == Status.PAST)
+		not DangerSituation(this after lastDanger)
+		cues : ArrayList (size > 0) from collect (EnvironmentalCue(lastDanger.afterEnd(this)) over window:time( 2m ))
+	then
+		Hippocampus.projectSituation(new GenericSituation(cues));
+		System.out.println("Creating GenericSituation.");
 end
 
 rule "Danger Situation End"
     when
         adrenaline : Adrenaline (level < adrThreshold)
-        danger : DangerSituation (status == Status.PRESENT)
+        situation : DangerSituation (status == Status.PRESENT)
     then
-    	System.out.println("Deactivating DangerSituation");
-        danger.terminate(adrenaline);
-        update(danger);
+        situation.terminate(adrenaline);
+        Hippocampus.projectSituation(situation);
+        update(situation);
 end
 
 rule "Environmental Cue During Danger Situation"
 	no-loop
 	when
-		event : EnvironmentalCue()
-		danger : DangerSituation (status == Status.PRESENT, this before event)
+		cue : EnvironmentalCue()
+		situation : DangerSituation (status == Status.PRESENT, this before cue)
 	then
-		System.out.println("Detecting new EnvironmentalCue during DangerSituation");
-		danger.addEnvironmentalCue(event);
-		update(danger);
+		situation.addEnvironmentalCue(cue);
+		update(situation);
 end
 
 rule "Adrenaline Change During Danger Situation"
 	no-loop
 	when
 		adrenaline : Adrenaline (level >= adrThreshold)
-        danger : DangerSituation (status == Status.PRESENT, this before adrenaline)
+        situation : DangerSituation (status == Status.PRESENT, this before adrenaline)
 	then
-		System.out.println("Updating Adrenaline of DangerSituation. New adrenaline level: " + adrenaline.getLevel());
-		danger.addAdrenaline(adrenaline);
-		update(danger);
+		situation.addAdrenaline(adrenaline);
+		update(situation);
 end
+
+

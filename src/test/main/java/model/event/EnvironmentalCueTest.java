@@ -10,10 +10,9 @@ public class EnvironmentalCueTest {
 
 	@Test
 	public final void testEnvironmentalCue() {
-		int [] features = new int [] {3,6,9};
-		EnvironmentalCue cue = new EnvironmentalCue(features, "cue1");
+		byte [] features = new byte [] {3,6,9};
+		EnvironmentalCue cue = new EnvironmentalCue(features);
 		assertEquals("Incorrect set of features for EnvironmentalCue object.", features, cue.getFeatures());
-		assertEquals("Incorrect name for EnvironmentalCue object.", "cue1", cue.getName());
 	}
 
 }

@@ -54,7 +54,7 @@ public class DangerSituationRuleTest extends RulesTest{
 	public void dangerSituation2() {
 		System.out.println("[JUnit] Starting test 'dangerSituation2'");
 		try{
-			EnvironmentalCue e1 = new EnvironmentalCue(new int [] {1,2,3}, "e1");
+			EnvironmentalCue e1 = new EnvironmentalCue(new byte [] {1,2,3});
 			hippocampus.insert(e1, defaultDelay);
 	
 			adrLevel = threshold + 1;

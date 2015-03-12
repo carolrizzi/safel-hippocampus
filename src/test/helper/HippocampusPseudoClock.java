@@ -60,6 +60,13 @@ public class HippocampusPseudoClock {
     	clock.advanceTime(delay, TimeUnit.SECONDS);
     	return this.insert(object);
     }
+//    
+//    public FactHandle insert (Adrenaline adr, long delay) {
+//    	clock.advanceTime(delay, TimeUnit.SECONDS);
+//    	this.adrenaline.setLevel(adr.getLevel());
+//    	this.update(this.adrenalineFactHandle, this.adrenaline, delay);
+//    	return this.adrenalineFactHandle;
+//    }
     
     public FactHandle insert (Object object) {
     	FactHandle fh = ksession.insert(object);
