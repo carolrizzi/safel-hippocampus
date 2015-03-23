@@ -47,6 +47,7 @@ rule "Eminent Danger Situation"
         not DangerSituation (status == Status.PRESENT)
         cues : ArrayList (size > 0) from collect (EnvironmentalCue(this before adrenaline) over window:time( 2m ))
 	then
+		System.out.println("Eminent Danger Situation");
         EminentDangerSituation eds = new EminentDangerSituation(cues, adrenaline);
         Hippocampus.projectSituation(eds);
         insert(eds);
@@ -58,6 +59,7 @@ rule "Danger Situation"
     	adrenaline : Adrenaline (level >= adrThreshold)
         not DangerSituation (status == Status.PRESENT)
     then
+    	System.out.println("Danger Situation");
         DangerSituation ds = new DangerSituation(adrenaline);
         insert(ds);
 end
@@ -70,6 +72,7 @@ rule "Generic Situation"
 		not DangerSituation(this after lastDanger)
 		cues : ArrayList (size > 0) from collect (EnvironmentalCue(lastDanger.afterEnd(this)) over window:time( 2m ))
 	then
+		System.out.println("Generic Situation");
 		Hippocampus.projectSituation(new GenericSituation(cues));
 		System.out.println("Creating GenericSituation.");
 end
@@ -79,29 +82,36 @@ rule "Danger Situation End"
         adrenaline : Adrenaline (level < adrThreshold)
         situation : DangerSituation (status == Status.PRESENT)
     then
+    	System.out.println("Danger Situation End");
         situation.terminate(adrenaline);
         Hippocampus.projectSituation(situation);
         update(situation);
 end
 
 rule "Environmental Cue During Danger Situation"
-	no-loop
+	no-loop true
+	lock-on-active true
 	when
 		cue : EnvironmentalCue()
 		situation : DangerSituation (status == Status.PRESENT, this before cue)
 	then
-		situation.addEnvironmentalCue(cue);
-		update(situation);
+		System.out.println("Environmental Cue During Danger Situation");
+		modify(situation){
+			addEnvironmentalCue(cue)
+		}
 end
 
 rule "Adrenaline Change During Danger Situation"
-	no-loop
+	no-loop true
+	lock-on-active true
 	when
 		adrenaline : Adrenaline (level >= adrThreshold)
         situation : DangerSituation (status == Status.PRESENT, this before adrenaline)
 	then
-		situation.addAdrenaline(adrenaline);
-		update(situation);
+		System.out.println("Updating Adrenaline for Ocurring Danger Situation. Level: " + adrenaline.getLevel());
+		modify(situation){
+			addAdrenaline(adrenaline)
+		}
 end
 
 

@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.drools.definition.type.ClassReactive;
+
 import uk.ac.kent.cs.model.event.Adrenaline;
 import uk.ac.kent.cs.model.event.EnvironmentalCue;
 import uk.ac.kent.cs.model.event.Event;
 
+@ClassReactive
 public abstract class Situation implements Serializable{
 
 	private static final long serialVersionUID = 1L;

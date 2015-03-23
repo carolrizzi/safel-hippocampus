@@ -29,14 +29,22 @@ public class Hippocampus {
 	private static StatefulKnowledgeSession ksession = null;
 	public static final int ADRENALINE_THRESHOLD = 5;
 	
+	public static void main (String [] args) throws Exception {}
+	
 	public Hippocampus() throws Exception {
+		System.out.println("Creating hippocampus");
 		this.initKnowledgeBase();
 		this.initKownledgeSession();
+		System.out.println("Hippocampus created");
 	}
 	
     private void initKnowledgeBase() throws Exception {
         KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-        kbuilder.add(ResourceFactory.newClassPathResource("situation.drl"), ResourceType.DRL);
+        try{
+        	kbuilder.add(ResourceFactory.newClassPathResource("situation.drl"), ResourceType.DRL);
+        }catch(Exception e){
+        	kbuilder.add(ResourceFactory.newClassPathResource("resources/situation.drl"), ResourceType.DRL);
+        }
         KnowledgeBuilderErrors errors = kbuilder.getErrors();
         if (errors.size() > 0) {
             for (KnowledgeBuilderError error: errors) {
@@ -77,6 +85,10 @@ public class Hippocampus {
 			System.err.println("Could not project DangerSituation.");
 			e.printStackTrace();
 		}
+    }
+    
+    public void ping (String str) {
+    	System.out.println("Hey! I hear you! Here is your string: " + str);
     }
     
     private FactHandle insert (Object object) {

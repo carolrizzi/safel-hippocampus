@@ -12,6 +12,7 @@ import main.rule.DangerSituationEndRuleTest;
 import main.rule.DangerSituationRuleTest;
 import main.rule.EminentDangerSituationRuleTest;
 import main.rule.EnvironmentalCueDuringDangerSituationRuleTest;
+import main.rule.GeneralTestRuleTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -33,7 +34,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	EminentDangerSituationRuleTest.class,
 	DangerSituationEndRuleTest.class,
 	EnvironmentalCueDuringDangerSituationRuleTest.class,
-	AdrenalineChangeDuringDangerSituationRuleTest.class
+	AdrenalineChangeDuringDangerSituationRuleTest.class,
+	GeneralTestRuleTest.class
 })
 
 public class AllTestsSuite {} 
