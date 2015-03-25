@@ -7,7 +7,8 @@ import uk.ac.kent.cs.model.situation.*;
 import java.util.ArrayList;
 
 // ===== GLOBAL ============================= //
-global java.lang.Integer adrThreshold;
+global java.lang.Double adrThreshold;
+global Hippocampus hippocampus;
 
 // ===== EVENT ============================== //
 declare EnvironmentalCue
@@ -49,7 +50,7 @@ rule "Eminent Danger Situation"
 	then
 		System.out.println("Eminent Danger Situation");
         EminentDangerSituation eds = new EminentDangerSituation(cues, adrenaline);
-        Hippocampus.projectSituation(eds);
+        hippocampus.projectSituation(eds);
         insert(eds);
 end
 
@@ -73,7 +74,7 @@ rule "Generic Situation"
 		cues : ArrayList (size > 0) from collect (EnvironmentalCue(lastDanger.afterEnd(this)) over window:time( 2m ))
 	then
 		System.out.println("Generic Situation");
-		Hippocampus.projectSituation(new GenericSituation(cues));
+		hippocampus.projectSituation(new GenericSituation(cues));
 		System.out.println("Creating GenericSituation.");
 end
 
@@ -84,7 +85,7 @@ rule "Danger Situation End"
     then
     	System.out.println("Danger Situation End");
         situation.terminate(adrenaline);
-        Hippocampus.projectSituation(situation);
+        hippocampus.projectSituation(situation);
         update(situation);
 end
 

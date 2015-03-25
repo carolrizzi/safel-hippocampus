@@ -15,7 +15,7 @@ public abstract class Situation implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	protected ArrayList<EnvironmentalCue> cues;
-	protected ArrayList<Integer> adrenalines;
+	protected ArrayList<Double> adrenalines;
 	protected Event startEvent;
 	protected Event endEvent;
 	protected Status status;
@@ -28,14 +28,14 @@ public abstract class Situation implements Serializable{
 		Collections.sort(events);
 		this.startEvent = events.get(0);
 		this.cues = new ArrayList<EnvironmentalCue>(events);
-		this.adrenalines = new ArrayList<Integer>();
+		this.adrenalines = new ArrayList<Double>();
 		this.status = Status.PRESENT;
 	}
 	
 	public Situation(Event startEvent) {
 		this.startEvent = startEvent;
 		this.cues = new ArrayList<EnvironmentalCue>();
-		this.adrenalines = new ArrayList<Integer>();
+		this.adrenalines = new ArrayList<Double>();
 		this.status = Status.PRESENT;
 	}
 	
@@ -52,7 +52,7 @@ public abstract class Situation implements Serializable{
 		this.adrenalines.add(adrenaline.getLevel());
 	}
 	
-	public void addAdrenaline (int adrLevel) {
+	public void addAdrenaline (double adrLevel) {
 		this.adrenalines.add(adrLevel);
 	}
 	
@@ -60,7 +60,7 @@ public abstract class Situation implements Serializable{
 		return cues;
 	}
 	
-	public ArrayList<Integer> getAdrenalines() {
+	public ArrayList<Double> getAdrenalines() {
 		return adrenalines;
 	}
 	

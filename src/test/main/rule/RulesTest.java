@@ -23,9 +23,9 @@ public abstract class RulesTest {
 
 	protected static HippocampusPseudoClock hippocampus;
 	protected static StatefulKnowledgeSession kSession;
-	protected static final int threshold = Hippocampus.ADRENALINE_THRESHOLD;
+	protected static final double threshold = Hippocampus.ADRENALINE_THRESHOLD;
 	protected static final int defaultDelay = 3; //seconds
-	protected Integer adrLevel = 0;
+	protected double adrLevel = 0.0;
 	
 	//	===== SETUP ========================================================= //
 	
@@ -111,25 +111,25 @@ public abstract class RulesTest {
 		return this.getObject(DangerSituation.class);
 	}
 	
-	protected <T extends Situation> T checkSituation (Class<T> situationType, int amountEnvironmentalCues, int amountAdrenaline, Integer currentAdrenalineLevel) {
+	protected <T extends Situation> T checkSituation (Class<T> situationType, int amountEnvironmentalCues, int amountAdrenaline, Double currentAdrenalineLevel) {
 		T situation = this.getObject(situationType);
 		checkSituation(situation, amountEnvironmentalCues, amountAdrenaline, currentAdrenalineLevel);
 		return situation;
 	}
 	
-	protected Situation checkSituation (int amountEnvironmentalCues, int amountAdrenaline, Integer currentAdrenalineLevel) {
+	protected Situation checkSituation (int amountEnvironmentalCues, int amountAdrenaline, Double currentAdrenalineLevel) {
 		Situation situation = this.getObject(Situation.class);
 		checkSituation(situation, amountEnvironmentalCues, amountAdrenaline, currentAdrenalineLevel);
 		return situation;
 	}
 	
-	protected <T extends Situation> void checkSituation (T situation, int amountEnvironmentalCues, int amountAdrenaline, Integer currentAdrenalineLevel) {
-		ArrayList<Integer> adrenalines = situation.getAdrenalines();
+	protected <T extends Situation> void checkSituation (T situation, int amountEnvironmentalCues, int amountAdrenaline, Double currentAdrenalineLevel) {
+		ArrayList<Double> adrenalines = situation.getAdrenalines();
 		int adrSize = adrenalines.size();
 		Class<? extends Situation> situationType = situation.getClass(); 
 		assertEquals("Situation of type " + situationType + " contains incorrect amount of events.", amountEnvironmentalCues, situation.getEnvironmentalCues().size());
 		assertEquals("Situation of type " + situationType + " contains incorrect amount of adrenaline measurements.", amountAdrenaline, adrSize);
-		assertEquals("Situation of type " + situationType + " contains incorrect Adrenaline level (most recent measurement).", currentAdrenalineLevel, (adrSize > 0 ? (adrenalines.get(adrSize - 1)) : new Integer(0)));
+		assertEquals("Situation of type " + situationType + " contains incorrect Adrenaline level (most recent measurement).", currentAdrenalineLevel, (adrSize > 0 ? (adrenalines.get(adrSize - 1)) : new Double(0)));
 	}
 	
 	protected void situationCheckEnvironmentalCues (Situation situation) {
@@ -155,21 +155,22 @@ public abstract class RulesTest {
 	 * If Situation should contain no Adrenaline objects
 	 */
 	protected void situationCheckAdrenalines (Situation situation) {
-		this.situationCheckAdrenalines(situation, new Integer[]{});
+		this.situationCheckAdrenalines(situation, new Double[]{});
 	}
 
-	protected void situationCheckAdrenalines (Situation situation, Integer[] adrenalines){
-		ArrayList<Integer> eventsArray = new ArrayList<Integer>(Arrays.asList(adrenalines));
+	protected void situationCheckAdrenalines (Situation situation, Double[] adrenalines){
+		ArrayList<Double> eventsArray = new ArrayList<Double>(Arrays.asList(adrenalines));
 		this.situationCheckAdrenalines(situation, eventsArray);
 	}
 	
-	protected void situationCheckAdrenalines (Situation situation, ArrayList<Integer> adrenalines) {
+	protected void situationCheckAdrenalines (Situation situation, ArrayList<Double> adrenalines) {
 		if(adrenalines == null || adrenalines.isEmpty()){
 			assertEquals("Number of Adrenaline objects in Situation is incorrect.", 0, situation.getAdrenalines().size());
 			return;
 		}
-		ArrayList<Integer> test = new ArrayList<Integer>(situation.getAdrenalines());
+		ArrayList<Double> test = new ArrayList<Double>(situation.getAdrenalines());
 		assertTrue("Adrenaline objects in Situation are incorrect.", !adrenalines.retainAll(test));
 		assertTrue("Adrenaline objects in Situation are incorrect.", !test.retainAll(adrenalines));
 	}
+	
 }

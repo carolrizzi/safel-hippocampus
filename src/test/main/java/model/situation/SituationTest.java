@@ -108,7 +108,7 @@ public class SituationTest {
 			situation.addAdrenaline(new Adrenaline(7));
 			situation.addAdrenaline(new Adrenaline(234));
 			Integer [] adr = new Integer [] {3,7,234};
-			ArrayList<Integer> adrenalines = situation.getAdrenalines();
+			ArrayList<Double> adrenalines = situation.getAdrenalines();
 			assertNotNull("Situation's list of adrenalines cannot be null", adrenalines);
 			for (int count = 0; count < 3; count ++){
 				assertEquals("Situation's list of adrenalines is incorrect", adr[count], adrenalines.get(count));

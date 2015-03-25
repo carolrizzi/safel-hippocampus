@@ -79,8 +79,8 @@ public class HippocampusTest {
 			assertNotNull("KnowledgeSession cannot be null.", ksession);
 			
 			String globalName = "adrThreshold";
-			int global = (Integer) ksession.getGlobal(globalName);
-			assertEquals("Global variable " + globalName + " has incorrect value.", Hippocampus.ADRENALINE_THRESHOLD, global);
+			double global = (Double) ksession.getGlobal(globalName);
+			assertTrue("Global variable " + globalName + " has incorrect value.", Hippocampus.ADRENALINE_THRESHOLD == global);
 			
 			KnowledgeSessionConfiguration config = ksession.getSessionConfiguration();
 			ClockTypeOption ctOption = config.getOption(ClockTypeOption.class);

@@ -11,7 +11,7 @@ public class AdrenalineTest {
 	@Test
 	public final void testAdrenaline() {
 		Adrenaline adrenaline = new Adrenaline(15);
-		assertEquals("Incorrect value for adrenaline level.", 15, adrenaline.getLevel());
+		assertTrue("Incorrect value for adrenaline level.", 15 == adrenaline.getLevel());
 	}
 
 }

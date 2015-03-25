@@ -3,6 +3,9 @@ package uk.ac.kent.cs;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
+import java.util.EventListener;
+import java.util.EventObject;
+import java.util.Vector;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseConfiguration;
@@ -25,9 +28,10 @@ import uk.ac.kent.cs.model.situation.Situation;
 
 public class Hippocampus {
 
+	private Vector<Object> data = new Vector<Object>();
 	private static KnowledgeBase kbase = null;
 	private static StatefulKnowledgeSession ksession = null;
-	public static final int ADRENALINE_THRESHOLD = 5;
+	public static final double ADRENALINE_THRESHOLD = 0.5;
 	
 	public static void main (String [] args) throws Exception {}
 	
@@ -64,6 +68,15 @@ public class Hippocampus {
     	config.setOption(ClockTypeOption.get("realtime"));
     	ksession = kbase.newStatefulKnowledgeSession(config, null);
     	ksession.setGlobal("adrThreshold", ADRENALINE_THRESHOLD);
+    	ksession.setGlobal("hippocampus", this);
+    }
+    
+    public synchronized void addSituationListener (SituationListener listener) {
+    	this.data.addElement(listener);
+    }
+    
+    public synchronized void removeSituationListener (SituationListener listener) {
+    	this.data.removeElement(listener);
     }
     
     public void insertEnvironmentalCue (byte [] features) {
@@ -71,14 +84,41 @@ public class Hippocampus {
     	this.insert(cue);
     }
     
-    public void insertAdrenaline (int level) {
+    public void insertAdrenaline (double level) {
     	Adrenaline adrenaline = new Adrenaline(level);
     	this.insert(adrenaline);
     }
     
-    public static <T extends Situation> void projectSituation (T situation) {
+    public interface SituationListener extends EventListener {
+    	void listenToSituation (SituationProjection projection);
+    }
+    
+    public class SituationProjection extends EventObject {
+		private static final long serialVersionUID = 1L;
+		private byte [] situation;
+
+		public SituationProjection(Object source, byte [] situation) {
+			super(source);
+			this.situation = situation;
+		}
+		
+		public byte[] getSituation () {
+			return this.situation;
+		}
+    }
+    
+    @SuppressWarnings("unchecked")
+	public <T extends Situation> void projectSituation (T situation) {
     	try {
     		byte [] serObj = serialize(situation);
+    		Vector<Object> copy;
+    		synchronized (this) {
+				copy = (Vector<Object>) this.data.clone();
+			}
+    		SituationProjection projection = new SituationProjection(this, serObj);
+    		for (Object c : copy){
+    			((SituationListener)c).listenToSituation(projection);;
+    		}
 			System.err.println(situation.getClass().toString() + ": " + serObj.toString());
 //			Runtime.getRuntime().exec("matlabscript.m " + serObj);
 		} catch (Exception e) {

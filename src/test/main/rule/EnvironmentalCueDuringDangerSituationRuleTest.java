@@ -31,7 +31,7 @@ public class EnvironmentalCueDuringDangerSituationRuleTest extends RulesTest {
 			hippocampus.insert(e1, defaultDelay);
 			this.checkDangerSituation(0);
 			
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			DangerSituation situation = this.getDangerSituation();
@@ -43,7 +43,7 @@ public class EnvironmentalCueDuringDangerSituationRuleTest extends RulesTest {
 			situation = this.getDangerSituation();
 			this.situationCheckEnvironmentalCues(situation, new EnvironmentalCue[]{e2});
 			
-			adrLevel = threshold - 1;
+			adrLevel = threshold - 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();

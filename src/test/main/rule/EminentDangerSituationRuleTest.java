@@ -24,7 +24,7 @@ public class EminentDangerSituationRuleTest extends RulesTest {
 		try {
 			// 1. ADRENALINE > THRESHOLD
 			// a) KieBase should contain no Situation or EnvironmentalCue
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkEminentDangerSituation(0);		
 		}catch(Exception e){
@@ -59,16 +59,16 @@ public class EminentDangerSituationRuleTest extends RulesTest {
 			hippocampus.insert(e2, defaultDelay);
 			checkEminentDangerSituation(0);
 			
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkEminentDangerSituation(1);
-			EminentDangerSituation situation = checkSituation(EminentDangerSituation.class, 2, 0, 0);
+			EminentDangerSituation situation = checkSituation(EminentDangerSituation.class, 2, 0, 0.0);
 			this.situationCheckEnvironmentalCues(situation, new EnvironmentalCue[]{e1,e2});
 			
-			adrLevel = threshold + 2;
+			adrLevel = threshold + 0.2;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkEminentDangerSituation(1);
-			situation = checkSituation(EminentDangerSituation.class, 2, 0, 0);
+			situation = checkSituation(EminentDangerSituation.class, 2, 0, 0.0);
 			this.situationCheckEnvironmentalCues(situation, new EnvironmentalCue[]{e1,e2});
 		}catch(Exception e){
 			e.printStackTrace();
@@ -102,10 +102,10 @@ public class EminentDangerSituationRuleTest extends RulesTest {
 			hippocampus.insert(e2, 180);
 			checkEminentDangerSituation(0);
 			
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkEminentDangerSituation(1);
-			EminentDangerSituation situation = checkSituation(EminentDangerSituation.class, 1, 0, 0);
+			EminentDangerSituation situation = checkSituation(EminentDangerSituation.class, 1, 0, 0.0);
 			this.situationCheckEnvironmentalCues(situation, new EnvironmentalCue[]{e2});
 		}catch(Exception e){
 			e.printStackTrace();

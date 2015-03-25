@@ -26,13 +26,13 @@ public class DangerSituationEndRuleTest extends RulesTest {
 	public void dangerSituationEnd1 () {
 		System.out.println("[JUnit] Starting test 'dangerSituationEnd1'");
 		try {
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkDangerSituation(1);
 			DangerSituation situation = this.getDangerSituation();
 			assertEquals("DangerSituation has incorrect status.", Situation.Status.PRESENT, situation.getStatus());
 			
-			adrLevel = threshold - 1;
+			adrLevel = threshold - 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkDangerSituation(1);
 			situation = this.getDangerSituation();

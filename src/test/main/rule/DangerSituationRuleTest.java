@@ -26,10 +26,10 @@ public class DangerSituationRuleTest extends RulesTest{
 	public void dangerSituation1() {
 		System.out.println("[JUnit] Starting test 'dangerSituation1'");
 		try {
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkDangerSituation(1);
-			DangerSituation situation = checkSituation(DangerSituation.class, 0, 0, 0);
+			DangerSituation situation = checkSituation(DangerSituation.class, 0, 0, 0.0);
 			assertEquals("Status of danger situation is incorrect", Situation.Status.PRESENT, situation.getStatus());
 		
 		}catch(Exception e){
@@ -57,10 +57,10 @@ public class DangerSituationRuleTest extends RulesTest{
 			EnvironmentalCue e1 = new EnvironmentalCue(new byte [] {1,2,3});
 			hippocampus.insert(e1, defaultDelay);
 	
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkDangerSituation(1);
-			DangerSituation situation = checkSituation(DangerSituation.class, 0, 0, 0);
+			DangerSituation situation = checkSituation(DangerSituation.class, 0, 0, 0.0);
 			assertEquals("Status of danger situation is incorrect", Situation.Status.PRESENT, situation.getStatus());
 		}catch(Exception e){
 			e.printStackTrace();
@@ -88,19 +88,19 @@ public class DangerSituationRuleTest extends RulesTest{
 //			kSession.addEventListener( new DebugRuleRuntimeEventListener() );
 //			new Debug
 			
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkDangerSituation(1);
 			DangerSituation situation = this.getDangerSituation();
 			assertEquals("Status of danger situation is incorrect", Situation.Status.PRESENT, situation.getStatus());
 
-			adrLevel = threshold - 1;
+			adrLevel = threshold - 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkDangerSituation(1);
 			situation = this.getDangerSituation();
 			assertEquals("Status of danger situation is incorrect", Situation.Status.PAST, situation.getStatus());
 			
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			checkDangerSituation(2);
 			

@@ -67,7 +67,7 @@ public class GeneralTestRuleTest {
 				byte [] b = outputStream.toByteArray( );
 				h.insertEnvironmentalCue(b);
 				if(a[2] >= 0){
-					h.insertAdrenaline(a[2]);
+					h.insertAdrenaline((double)a[2]/10);
 				}
 			}
 			

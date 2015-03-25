@@ -30,39 +30,39 @@ public class AdrenalineChangeDuringDangerSituationRuleTest extends RulesTest {
 	public void adrenalineChangeDuringDangerSituation1() {
 		System.out.println("[JUnit] Starting test 'adrenalineChangeDuringDangerSituation1'");
 		try {
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			DangerSituation situation = this.getDangerSituation();
 			this.situationCheckAdrenalines(situation);
 			
-			adrLevel = threshold + 2;
+			adrLevel = threshold + 0.2;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();
-			this.situationCheckAdrenalines(situation, new Integer[]{adrLevel});
+			this.situationCheckAdrenalines(situation, new Double[]{adrLevel});
 			
-			int adrLevel1 = adrLevel;
-			adrLevel = threshold + 3;
+			double adrLevel1 = adrLevel;
+			adrLevel = threshold + 0.3;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();
-			this.situationCheckAdrenalines(situation, new Integer[]{adrLevel1,adrLevel});
+			this.situationCheckAdrenalines(situation, new Double[]{adrLevel1,adrLevel});
 
-			int adrLevel2 = adrLevel;
-			adrLevel = threshold - 1;
+			double adrLevel2 = adrLevel;
+			adrLevel = threshold - 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();
-			this.situationCheckAdrenalines(situation, new Integer[]{adrLevel1,adrLevel2});
+			this.situationCheckAdrenalines(situation, new Double[]{adrLevel1,adrLevel2});
 
-			adrLevel = threshold - 2;
+			adrLevel = threshold - 0.2;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(1);
 			situation = this.getDangerSituation();
-			this.situationCheckAdrenalines(situation, new Integer[]{adrLevel1,adrLevel2});
+			this.situationCheckAdrenalines(situation, new Double[]{adrLevel1,adrLevel2});
 			
-			adrLevel = threshold + 1;
+			adrLevel = threshold + 0.1;
 			hippocampus.insert(new Adrenaline(adrLevel), defaultDelay);
 			this.checkDangerSituation(2);
 			ArrayList<DangerSituation> allSituations = this.getObjects(DangerSituation.class);
@@ -72,7 +72,7 @@ public class AdrenalineChangeDuringDangerSituationRuleTest extends RulesTest {
 				if(sit.getAdrenalines().isEmpty()){
 					count++;
 				}else{
-					this.situationCheckAdrenalines(sit, new Integer[]{adrLevel1,adrLevel2});
+					this.situationCheckAdrenalines(sit, new Double[]{adrLevel1,adrLevel2});
 					count += 2;
 				}
 			}
